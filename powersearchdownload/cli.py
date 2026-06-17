@@ -17,7 +17,7 @@ _DEFAULT_USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebK
 @click.option('--user-agent', default=_DEFAULT_USER_AGENT, help="User-Agent HTTP header for request to PowerSearch\nDefault: %s" % _DEFAULT_USER_AGENT)
 @click.option('-v', '--verbose', is_flag=True, default=False, help="Show extra information")
 def cli(data_type, candidate, committee, election_cycle, measures, office, output, position, silent, user_agent, verbose):
-    """Download campaign contribution or independent expenditure data from California secretary of state's tool called PowerSearch"""
+    """Download campaign contribution or independent expenditure data from California secretary of state's PowerSearch tool"""
     url = None
 
     if data_type == 'contributions':
