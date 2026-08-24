@@ -70,7 +70,7 @@ uv pip install "git+https://github.com/CalMatters/powersearch-download.git"
 
 ## Data Dictionary
 
-The output data of this tool does not modify data from Powersearch, which is [documented here](https://powersearch.sos.ca.gov/frequently-asked-questions/).
+The output data of this tool is downloaded, unmodified data from California's [Powersearch tool](https://powersearch.sos.ca.gov).
 
 <table>
   <thead>
@@ -181,9 +181,10 @@ We made this tool because we needed it to regularly download contribution data f
 
 And we're sharing it publicly in case other folks need it or have ideas for improvement.
 
-## Please let us know if you use this tool!
+## Data use
+While the contents of this repo are shared under an Apache 2.0 license, CalMatters/The Markup would appreciate any credit or attribution you're willing to give. We're also interested to learn how you used it, so feel free to send us a message or open an issue if you do. If you have any questions, feel free to contact us as well.
 
-If you end up using this tool, please get in touch and share your use case with us by sending an email to jeremia@calmatters.org.
+CalMatters is a nonpartisan, nonprofit journalism venture committed to explaining how California’s state Capitol works and why it matters.
 
 ## License
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. There is a full copy of [the License](https://github.com/CalMatters/powersearch-download/blob/main/LICENSE) in this repository.
