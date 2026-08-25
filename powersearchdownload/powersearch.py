@@ -51,6 +51,8 @@ def create_contribution_download_url(
     office: str | None = None,
     election_cycles: list | None = None,
     ballot_measures: str | None = None,
+    from_date: str | None = None,
+    to_date: str | None = None,
 ) -> str:
     """
     Build a PowerSearch CSV download URL.
@@ -67,6 +69,10 @@ def create_contribution_download_url(
         Only the first year of each cycle is used, sorted descending.
     ballot_measures : str, optional
         When provided, switches to ballot-measure mode instead of candidate mode.
+    from_date : str, optional
+        Start of a transaction date range, in "YYYY-MM-DD" format.
+    to_date : str, optional
+        End of a transaction date range, in "YYYY-MM-DD" format.
     """
     base = "https://powersearch.sos.ca.gov/download_csv.php"
 
@@ -81,6 +87,11 @@ def create_contribution_download_url(
             reverse=True,
         )
 
+    date_range = bool(from_date and to_date)
+    # Date-only searches (no candidate/office/ballot filter) aren't restricted
+    # to candidate contributions - they cover all recipients.
+    general_mode = date_range and not (candidate_upper or office or ballot_measures)
+
     # ------------------------------------------------------------------
     # Build WHERE clause (w) and positional data list (d)
     # ------------------------------------------------------------------
@@ -89,6 +100,8 @@ def create_contribution_download_url(
 
     if ballot_measures:
         where_parts.append("contributions_search.BallotMeasureContribution = 'Y'")
+    elif general_mode:
+        pass
     else:
         if candidate_upper:
             where_parts.append("smry_candidates.RecipientCandidateNameNormalized = ?")
@@ -110,6 +123,13 @@ def create_contribution_download_url(
             where_parts.append(f"({or_clause})")
         d_values.extend(cycle_years)
 
+    if date_range:
+        where_parts.append(
+            "(contributions_search.TransactionDateEnd >= ? "
+            "AND contributions_search.TransactionDateEnd <= ?)"
+        )
+        d_values.extend([from_date, to_date])
+
     where_clause = "WHERE " + " AND ".join(where_parts)
 
     # d param: PHP indexed array of positional values
@@ -125,12 +145,14 @@ def create_contribution_download_url(
 
     if ballot_measures:
         c["02Recipient(s)"] = "All ballot measures"
+    elif general_mode:
+        c["02Recipient(s)"] = "All"
     elif candidate_upper:
         c["02Recipient(s)"] = f"Candidate: {candidate_upper}"
     else:
         c["02Recipient(s)"] = "All candidates"
 
-    c["07Contribution_Dates_and_Cycles"] = "" if cycle_years else "All"
+    c["07Contribution_Dates_and_Cycles"] = "" if (cycle_years or date_range) else "All"
 
     if ballot_measures:
         c["06Exclude_Allied_Committees"] = "No"
@@ -139,6 +161,9 @@ def create_contribution_download_url(
 
     if cycle_years:
         c["09Contribution_Cycles"] = ", ".join(cycle_years)
+
+    if date_range:
+        c["08Contribution_Dates"] = f"{from_date} - {to_date}"
 
     c_serialized = _serialize_dict(c)
 

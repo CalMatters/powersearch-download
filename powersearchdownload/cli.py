@@ -9,19 +9,21 @@ _DEFAULT_USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebK
 @click.option('--candidate', default=None, help="Candidate name (LAST, FIRST)")
 @click.option('--committee', default=None, help="Limit data to one specific committee")
 @click.option('-e', '--election-cycle', default=None, multiple=True, help="Election cycles in YYYY-YYYY format")
+@click.option('--from-date', default=None, help="Contributions since this date")
 @click.option('-m', '--measures', default=None, multiple=True, help="Limit data to specific ballot measures")
 @click.option('--office', default=None, help="Office such as 'Governor', 'Secretary of State', or 'State Assembly'")
 @click.option('--output', default="powersearch-dl_data.csv", help="Output file path")
 @click.option('--position', default=None, help="Limit independent expenditure data to one particular position (S or O; support or oppose)")
 @click.option('-s', '--silent', is_flag=True, default=False, help="Do not error regardless of query")
+@click.option('--to-date', default=None, help="Contributions up until this date")
 @click.option('--user-agent', default=_DEFAULT_USER_AGENT, help="User-Agent HTTP header for request to PowerSearch\nDefault: %s" % _DEFAULT_USER_AGENT)
 @click.option('-v', '--verbose', is_flag=True, default=False, help="Show extra information")
-def cli(data_type, candidate, committee, election_cycle, measures, office, output, position, silent, user_agent, verbose):
+def cli(data_type, candidate, committee, election_cycle, from_date, measures, office, output, position, silent, to_date, user_agent, verbose):
     """Download campaign contribution or independent expenditure data from California secretary of state's PowerSearch tool"""
     url = None
 
     if data_type == 'contributions':
-        url = create_contribution_download_url(candidate, office, election_cycle, measures)
+        url = create_contribution_download_url(candidate, office, election_cycle, measures, from_date, to_date)
     elif data_type == 'ie':
         url = create_ie_download_url(election_cycle, committee, position, candidate, office, measures)
     elif not silent:

@@ -41,6 +41,11 @@ def test_create_download_url_for_contributions_insurance_commissioner_2015_2016_
   _EXPECTED = '''https://powersearch.sos.ca.gov/download_csv.php?w=WHERE+smry_offices.RecipientCandidateOffice+%3D+%3F+AND+contributions_search.CandidateContribution+%3D+%27Y%27+AND+%28contributions_search.ElectionCycle+%3D+%3F+OR+contributions_search.ElectionCycle+%3D+%3F%29&d=a%3A3%3A%7Bi%3A0%3Bs%3A22%3A%22Insurance+Commissioner%22%3Bi%3A1%3Bs%3A4%3A%222019%22%3Bi%3A2%3Bs%3A4%3A%222015%22%3B%7D&c=a%3A6%3A%7Bs%3A16%3A%2200Contributor%28s%29%22%3Bs%3A3%3A%22All%22%3Bs%3A19%3A%2201Contributor_State%22%3Bs%3A3%3A%22All%22%3Bs%3A14%3A%2202Recipient%28s%29%22%3Bs%3A14%3A%22All+candidates%22%3Bs%3A31%3A%2207Contribution_Dates_and_Cycles%22%3Bs%3A0%3A%22%22%3Bs%3A18%3A%2203Recipient_Office%22%3Bs%3A22%3A%22Insurance+Commissioner%22%3Bs%3A21%3A%2209Contribution_Cycles%22%3Bs%3A10%3A%222019%2C+2015%22%3B%7D'''
   actual = create_contribution_download_url(office="Insurance Commissioner", election_cycles=['2015-2016', '2019-2020'])
   assert actual == _EXPECTED
+  
+def test_create_download_url_for_contributions_january_2026():
+  _EXPECTED = '''https://powersearch.sos.ca.gov/download_csv.php?w=WHERE+%28contributions_search.TransactionDateEnd+%3E%3D+%3F+AND+contributions_search.TransactionDateEnd+%3C%3D+%3F%29&d=a%3A2%3A%7Bi%3A0%3Bs%3A10%3A%222026-01-01%22%3Bi%3A1%3Bs%3A10%3A%222026-01-31%22%3B%7D&c=a%3A5%3A%7Bs%3A16%3A%2200Contributor%28s%29%22%3Bs%3A3%3A%22All%22%3Bs%3A19%3A%2201Contributor_State%22%3Bs%3A3%3A%22All%22%3Bs%3A14%3A%2202Recipient%28s%29%22%3Bs%3A3%3A%22All%22%3Bs%3A31%3A%2207Contribution_Dates_and_Cycles%22%3Bs%3A0%3A%22%22%3Bs%3A20%3A%2208Contribution_Dates%22%3Bs%3A23%3A%222026-01-01+-+2026-01-31%22%3B%7D'''
+  actual = create_contribution_download_url(from_date="2026-01-01", to_date="2026-01-31")
+  assert actual == _EXPECTED
 
 # IE
 def test_create_download_url_for_ie_all():
