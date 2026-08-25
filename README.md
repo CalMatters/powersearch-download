@@ -179,7 +179,7 @@ We made this tool because we needed it to regularly download contribution data f
 1. Makes it easier to construct queries
 2. Errors out if there is a problem with the downloaded data
 
-And we're sharing it publicly in case other folks need it or have ideas for improvement.
+We use this tool to build our [2026 California voter guide](https://calmatters.org/california-voter-guide-2026/) and we're sharing it publicly in case other folks need it or have ideas for improvement.
 
 ## Data use
 While the contents of this repo are shared under an Apache 2.0 license, CalMatters/The Markup would appreciate any credit or attribution you're willing to give. We're also interested to learn how you used it, so feel free to send us a message or open an issue if you do. If you have any questions, feel free to contact us as well.
